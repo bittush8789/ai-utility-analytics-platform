@@ -1,0 +1,13 @@
+streamlit
+pandas
+numpy
+plotly
+SQLAlchemy
+Faker
+python-dotenv
+groq
+openpyxl
+fpdf
+statsmodels
+scikit-learn
+tabulate

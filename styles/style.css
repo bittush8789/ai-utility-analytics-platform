@@ -1,0 +1,111 @@
+/* Ultra Clean Premium Enterprise SaaS Styles for Streamlit App */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --bg-base: #090D16;
+    --bg-card: #111827;
+    --bg-sidebar: #0D1321;
+    --border-soft: #1F2937;
+    --accent-blue: #38BDF8;
+    --accent-emerald: #10B981;
+    --text-primary: #F3F4F6;
+    --text-muted: #9CA3AF;
+}
+
+html, body, [data-testid="stAppViewContainer"] {
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+[data-testid="stSidebar"] {
+    background-color: var(--bg-sidebar) !important;
+    border-right: 1px solid var(--border-soft);
+}
+
+/* Clear top margins & paddings */
+.block-container {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+}
+
+/* Custom Premium KPI Cards */
+.kpi-card {
+    background: var(--bg-card);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-soft);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+    margin-bottom: 1rem;
+}
+.kpi-card:hover {
+    transform: translateY(-2px);
+    border-color: #313D4F;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+}
+.kpi-title {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+.kpi-value {
+    color: var(--accent-blue);
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+/* Buttons Styling */
+.stButton > button {
+    background-color: var(--bg-card);
+    color: var(--text-primary);
+    border: 1px solid var(--border-soft);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+.stButton > button:hover {
+    background-color: var(--accent-blue);
+    color: #000;
+    border-color: var(--accent-blue);
+}
+
+/* Standard Metric Tweaks */
+[data-testid="stMetricValue"] {
+    color: var(--accent-blue) !important;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+}
+
+/* Clear clutter */
+#MainMenu, footer, header {
+    visibility: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-primary) !important;
+    font-weight: 600 !important;
+}
+
+/* Tabs styling */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 12px;
+}
+.stTabs [data-baseweb="tab"] {
+    background-color: transparent !important;
+    color: var(--text-muted) !important;
+    border: none !important;
+    border-bottom: 2px solid transparent !important;
+    padding: 8px 16px !important;
+    font-weight: 600 !important;
+}
+.stTabs [aria-selected="true"] {
+    color: var(--accent-blue) !important;
+    border-color: var(--accent-blue) !important;
+}

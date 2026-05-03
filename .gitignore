@@ -1,0 +1,11 @@
+.env
+__pycache__/
+*.pyc
+utility_analytics.db
+*.db
+.streamlit/
+uploads/
+reports/
+logs/
+.venv/
+venv/
