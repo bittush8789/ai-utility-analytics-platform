@@ -203,6 +203,66 @@ streamlit run app.py
 
 ---
 
+## 📸 Platform Interactive Screen Previews & Workflows
+
+Below is a visual walkthrough of the platform's core interface modules and operational capabilities:
+
+### 1. Unified Dashboard Insights
+![Dashboard View](stream-photo/183177cf-1691-4278-b88a-295ac0b6de21.jpg)
+
+### 2. Live Incident Tracking & Map Vectors
+![Map View](stream-photo/1999a504-8560-4c06-8da4-38d9dbbf96fb.jpg)
+
+### 3. AI Copilot Conversational Workflows
+![Copilot View](stream-photo/19e1c874-6ca4-4edc-a13e-5e53ac73a685.jpg)
+
+### 4. Complaints Monitoring Engine
+![Complaints Interface](stream-photo/1dde68be-1d20-46cd-b08d-61f49f79be33.jpg)
+
+### 5. Task & Work Order Optimization
+![Work Orders](stream-photo/3c87dff0-dd7f-4720-b76e-5520394c67a4.jpg)
+
+### 6. Dynamic Visual Heatmaps & GIS Intelligence
+![Geo Analysis](stream-photo/417db170-893f-4e70-82ea-80b87dcac3ff.jpg)
+
+### 7. Automated Anomaly Detections & Watchdogs
+![Anomalies Screen](stream-photo/43da5d01-84e2-4fff-9bfa-376e5047e0fe.jpg)
+
+### 8. Billing Lifecycle Monitoring
+![Billing Analysis](stream-photo/4ad1b097-cc32-41c3-b332-59aadc94d764.jpg)
+
+### 9. Time Series Predictive Forecasting
+![Projections View](stream-photo/55ce941b-5b09-4fbf-ba01-d78c2a316f25.jpg)
+
+### 10. Executive Command View
+![Analytics Portal](stream-photo/56bf32c1-57d1-4783-9bb7-44ef59e6137d.jpg)
+
+### 11. Custom Data Ingestion Lab Workspace
+![Sandbox Workspace](stream-photo/7658ae70-e977-4b9b-ac3c-76bfecf6a2d0.jpg)
+
+### 12. Corporate Role Access Isolation
+![IAM Portal](stream-photo/7dee1d20-07e0-4365-a817-77d84f3213da.jpg)
+
+### 13. System Metrics & Telemetry Summarization
+![Metrics Summary](stream-photo/870b30af-a74e-4697-b756-09f3268a3c3d.jpg)
+
+### 14. Anomaly Flags & Alert Notifications
+![Alert Dispatch](stream-photo/b24dfff2-b2fe-479c-926e-3e74f08b4d78.jpg)
+
+### 15. Real-Time Telemetry Tracking Charts
+![Analytics Detail](stream-photo/c52ef0ed-a94f-42d5-a7d3-a1993af385d9.jpg)
+
+### 16. What-If Calculations Simulator View
+![Calculators Portal](stream-photo/d2a9f975-a967-46a4-9e2b-f15048359675.jpg)
+
+### 17. Multi-Agent Recommendations Output
+![AI Assistant Answers](stream-photo/f3c3de58-f55a-400d-8b31-463a29bcb74a.jpg)
+
+### 18. Secure Access Logging & Audits Viewer
+![Logs Audit Console](stream-photo/f5f2e524-7840-459a-938d-aab5923924dc.jpg)
+
+---
+
 ## 📄 License
 
 Distributed under the standard **MIT License**. Check `LICENSE` for more details.
