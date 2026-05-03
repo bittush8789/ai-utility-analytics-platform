@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Utility Analytics Platform V3.0</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- ChartJS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background-color: #0B0F19; color: #F3F4F6; }
+        .app-card { background-color: #111827; border: 1px solid #1F2937; border-radius: 12px; transition: all 0.2s ease-in-out; }
+        .app-card:hover { border-color: #38BDF8; }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <!-- Auth Protected Navigation Wrapper -->
+    <div id="app-portal" class="hidden h-screen flex overflow-hidden">
+        
+        <!-- Sidebar -->
+        <div class="w-64 bg-[#0D1321] border-r border-[#1F2937] flex flex-col justify-between">
+            <div class="p-6">
+                <div class="flex items-center space-x-3 mb-8">
+                    <span class="text-2xl">💧</span>
+                    <h1 class="text-xl font-bold tracking-tight text-white select-none">Utility V3.0</h1>
+                </div>
+                <nav class="space-y-1.5">
+                    <button onclick="switchView('dashboard')" class="nav-btn w-full flex items-center px-4 py-3 text-sm font-semibold text-gray-300 hover:text-white rounded-xl hover:bg-[#111827] transition">
+                        📊 Executive Insights
+                    </button>
+                    <button onclick="switchView('copilot')" class="nav-btn w-full flex items-center px-4 py-3 text-sm font-semibold text-gray-300 hover:text-white rounded-xl hover:bg-[#111827] transition">
+                        🤖 AI SQL Copilot
+                    </button>
+                    <button onclick="switchView('alerts')" class="nav-btn w-full flex items-center px-4 py-3 text-sm font-semibold text-gray-300 hover:text-white rounded-xl hover:bg-[#111827] transition">
+                        🚨 Alerts Center
+                    </button>
+                    <button onclick="logout()" class="w-full flex items-center px-4 py-3 text-sm font-semibold text-rose-400 hover:text-rose-300 rounded-xl hover:bg-rose-500/10 transition mt-8">
+                        🔑 Sign Out
+                    </button>
+                </nav>
+            </div>
+            <div class="p-4 border-t border-[#1F2937]">
+                <div class="text-xs text-gray-500 uppercase tracking-wide">Identity Scope</div>
+                <div id="user-display" class="text-sm font-semibold text-white mt-0.5">Admin Role Profile</div>
+            </div>
+        </div>
+
+        <!-- Main Workspace -->
+        <div class="flex-1 flex flex-col overflow-y-auto bg-[#090D16]">
+            
+            <!-- Top Nav -->
+            <header class="h-16 border-b border-[#1F2937] px-8 flex items-center justify-between bg-[#0D1321]/60 backdrop-blur-md sticky top-0 z-40">
+                <div class="text-sm text-gray-400 font-medium">Enterprise Portal Access Mode <span class="text-[#38BDF8] font-bold">GRANTED</span></div>
+                <div class="flex items-center space-x-4">
+                    <span id="role-badge" class="bg-[#1F2937] border border-[#38BDF8]/40 text-[#38BDF8] px-3 py-1 text-xs font-bold rounded-lg uppercase">System Admin</span>
+                </div>
+            </header>
+
+            <!-- Dashboard Modular View -->
+            <main id="view-dashboard" class="flex-1 p-8 view-section">
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <h2 class="text-3xl font-extrabold text-white">Advanced Operations Intelligence</h2>
+                        <p class="text-sm text-gray-400 mt-1">Real-time overview across active telemetry feeds and assets.</p>
+                    </div>
+                    <button onclick="loadKPIs()" class="bg-[#111827] hover:bg-[#1F2937] text-sm px-5 py-2.5 rounded-xl border border-[#1F2937] font-semibold text-white transition">
+                        🔄 Dynamic Refresh
+                    </button>
+                </div>
+
+                <!-- KPI Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="app-card p-6">
+                        <div class="text-xs text-gray-400 font-semibold uppercase tracking-wide select-none">Operational Incidents</div>
+                        <div id="kpi-incidents" class="text-4xl font-extrabold text-[#38BDF8] mt-2">--</div>
+                    </div>
+                    <div class="app-card p-6">
+                        <div class="text-xs text-gray-400 font-semibold uppercase tracking-wide select-none">Outstanding Complaints</div>
+                        <div id="kpi-complaints" class="text-4xl font-extrabold text-[#38BDF8] mt-2">--</div>
+                    </div>
+                    <div class="app-card p-6">
+                        <div class="text-xs text-gray-400 font-semibold uppercase tracking-wide select-none">Revenue Stream</div>
+                        <div id="kpi-revenue" class="text-4xl font-extrabold text-[#38BDF8] mt-2">--</div>
+                    </div>
+                    <div class="app-card p-6">
+                        <div class="text-xs text-gray-400 font-semibold uppercase tracking-wide select-none">SLA Compliance</div>
+                        <div id="kpi-sla" class="text-4xl font-extrabold text-[#10B981] mt-2">--</div>
+                    </div>
+                </div>
+
+                <!-- Live Analytical Visuals -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="app-card p-6">
+                        <h3 class="text-lg font-bold text-white mb-4">Incidents Severity Map</h3>
+                        <canvas id="chart-incidents" class="max-h-64 w-full"></canvas>
+                    </div>
+                    <div class="app-card p-6">
+                        <h3 class="text-lg font-bold text-white mb-4">Direct Customer Complaints</h3>
+                        <canvas id="chart-complaints" class="max-h-64 w-full"></canvas>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Copilot Modular View -->
+            <main id="view-copilot" class="flex-1 p-8 view-section hidden">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-extrabold text-white">🤖 AI SQL Conversational Copilot</h2>
+                    <p class="text-sm text-gray-400 mt-1">Run conversational natural language queries on high volume historical tables.</p>
+                </div>
+                
+                <div class="app-card p-6 mb-8">
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <input type="text" id="ai-input" placeholder="Ask your data question (e.g. 'Show active incidents...')" class="flex-1 bg-[#090D16] border border-[#1F2937] focus:border-[#38BDF8] text-white rounded-xl px-5 py-3.5 focus:outline-none transition">
+                        <button onclick="runQuery()" class="bg-[#111827] hover:bg-[#38BDF8] hover:text-black border border-[#38BDF8]/40 px-8 py-3.5 rounded-xl text-sm font-extrabold text-[#38BDF8] transition">Execute Analysis</button>
+                    </div>
+                </div>
+
+                <div id="query-results" class="hidden space-y-6">
+                    <div class="app-card p-6">
+                        <h4 class="text-xs text-gray-400 uppercase tracking-wide font-bold mb-2">Synthesized Validated SQL Query</h4>
+                        <pre id="code-sql" class="bg-[#090D16] text-[#38BDF8] p-4 rounded-xl font-mono text-sm border border-[#1F2937] overflow-x-auto"></pre>
+                    </div>
+                    <div class="app-card p-6 overflow-x-auto">
+                        <h4 class="text-xs text-gray-400 uppercase tracking-wide font-bold mb-4">Results Table Grid Output</h4>
+                        <table class="w-full text-sm text-left border-collapse">
+                            <thead class="text-xs uppercase bg-[#1F2937] text-gray-400">
+                                <tr id="table-head"></tr>
+                            </thead>
+                            <tbody id="table-body" class="divide-y divide-[#1F2937]"></tbody>
+                        </table>
+                    </div>
+                    <div class="app-card p-6 border-l-4 border-[#38BDF8]">
+                        <h4 class="text-xs text-gray-400 uppercase tracking-wide font-bold mb-2">Strategic Intelligence Context</h4>
+                        <p id="ai-context" class="text-sm font-medium leading-relaxed text-gray-300"></p>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Alerts Modular View -->
+            <main id="view-alerts" class="flex-1 p-8 view-section hidden">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-extrabold text-white">🚨 Enterprise Emergency Network Alerts</h2>
+                    <p class="text-sm text-gray-400 mt-1">Review critical system alerts and anomalies.</p>
+                </div>
+                <div class="app-card p-6">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left border-collapse">
+                            <thead class="text-xs uppercase bg-[#1F2937] text-gray-400">
+                                <tr>
+                                    <th class="px-6 py-4">Event Type</th>
+                                    <th class="px-6 py-4">Severity Level</th>
+                                    <th class="px-6 py-4">Detailed Message</th>
+                                    <th class="px-6 py-4">Log Timestamp</th>
+                                </tr>
+                            </thead>
+                            <tbody id="alerts-body" class="divide-y divide-[#1F2937]"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+
+        </div>
+    </div>
+
+    <!-- Master Login Screen -->
+    <div id="login-portal" class="min-h-screen flex items-center justify-center bg-[#090D16] px-4">
+        <div class="app-card w-full max-w-md p-8 shadow-2xl">
+            <div class="text-center mb-8">
+                <span class="text-4xl">💧</span>
+                <h1 class="text-2xl font-black mt-3 text-white">Corporate Identity Core</h1>
+                <p class="text-sm text-gray-400 mt-1 font-medium">Access UK Utilities Analytics V3.0</p>
+            </div>
+            <div id="error-alert" class="hidden bg-rose-500/10 border border-rose-500/30 rounded-xl p-4 text-xs font-bold text-rose-400 mb-6"></div>
+            <div class="space-y-4">
+                <div>
+                    <label class="text-xs text-gray-400 uppercase tracking-wide font-bold">User Identity ID</label>
+                    <input type="text" id="auth-username" value="admin" class="w-full bg-[#090D16] border border-[#1F2937] text-white px-4 py-3 rounded-xl focus:border-[#38BDF8] focus:outline-none mt-1.5 transition">
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400 uppercase tracking-wide font-bold">Encrypted Password</label>
+                    <input type="password" id="auth-password" value="admin123" class="w-full bg-[#090D16] border border-[#1F2937] text-white px-4 py-3 rounded-xl focus:border-[#38BDF8] focus:outline-none mt-1.5 transition">
+                </div>
+                <button onclick="login()" class="w-full bg-[#111827] hover:bg-[#38BDF8] hover:text-black border border-[#38BDF8]/40 py-3.5 rounded-xl font-black text-[#38BDF8] text-sm tracking-wide transition mt-6 cursor-pointer">
+                    Secure Sandbox Login
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Controller Client Script -->
+    <script>
+        const API_URL = "http://localhost:8000";
+        let sessionToken = localStorage.getItem("v3_token");
+        let activeCharts = {};
+
+        // Login Process
+        async function login() {
+            const u = document.getElementById("auth-username").value;
+            const p = document.getElementById("auth-password").value;
+            const errDiv = document.getElementById("error-alert");
+            errDiv.classList.add("hidden");
+
+            try {
+                const res = await fetch(`${API_URL}/auth/login`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username: u, password: p })
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    sessionToken = data.access_token;
+                    localStorage.setItem("v3_token", sessionToken);
+                    document.getElementById("user-display").innerText = `${data.user.username.toUpperCase()} Profile`;
+                    document.getElementById("role-badge").innerText = data.user.role;
+                    initializePlatform();
+                } else {
+                    const err = await res.json();
+                    errDiv.innerText = err.detail || "Invalid login profile credentials.";
+                    errDiv.classList.remove("hidden");
+                }
+            } catch (e) {
+                errDiv.innerText = "Error contacting backend API service.";
+                errDiv.classList.remove("hidden");
+            }
+        }
+
+        // Logout Session
+        function logout() {
+            localStorage.clear();
+            sessionToken = null;
+            document.getElementById("app-portal").classList.add("hidden");
+            document.getElementById("login-portal").classList.remove("hidden");
+        }
+
+        // Page Module Switching View Logic
+        function switchView(target) {
+            document.querySelectorAll(".view-section").forEach(sec => sec.classList.add("hidden"));
+            document.getElementById(`view-${target}`).classList.remove("hidden");
+            if (target === 'dashboard') loadKPIs();
+            if (target === 'alerts') loadAlerts();
+        }
+
+        // Start authenticated flow
+        function initializePlatform() {
+            document.getElementById("login-portal").classList.add("hidden");
+            document.getElementById("app-portal").classList.remove("hidden");
+            switchView('dashboard');
+        }
+
+        // Fetch Dashboard Metrics
+        async function loadKPIs() {
+            try {
+                const res = await fetch(`${API_URL}/dashboard/kpis`, {
+                    headers: { "Authorization": `Bearer ${sessionToken}` }
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    document.getElementById("kpi-incidents").innerText = data.active_incidents;
+                    document.getElementById("kpi-complaints").innerText = data.unresolved_complaints;
+                    document.getElementById("kpi-revenue").innerText = `£${data.total_revenue.toLocaleString()}`;
+                    document.getElementById("kpi-sla").innerText = data.sla_compliance_rate;
+                    loadCharts();
+                }
+            } catch (e) {}
+        }
+
+        // Fetch Visual Charts Data
+        async function loadCharts() {
+            try {
+                const res = await fetch(`${API_URL}/dashboard/charts`, {
+                    headers: { "Authorization": `Bearer ${sessionToken}` }
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    renderChart('chart-incidents', 'bar', data.incidents_by_severity.map(i => i.severity), data.incidents_by_severity.map(i => i.value), '#38BDF8');
+                    renderChart('chart-complaints', 'doughnut', data.complaints_by_type.map(i => i.complaint_type), data.complaints_by_type.map(i => i.value), ['#10B981', '#38BDF8', '#F59E0B', '#EF4444']);
+                }
+            } catch (e) {}
+        }
+
+        // Dynamic chart painter helper
+        function renderChart(canvasId, type, labels, data, bgColor) {
+            if (activeCharts[canvasId]) activeCharts[canvasId].destroy();
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            activeCharts[canvasId] = new Chart(ctx, {
+                type: type,
+                data: {
+                    labels: labels,
+                    datasets: [{ data: data, backgroundColor: bgColor, borderColor: '#1F2937', borderWidth: 1 }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: type === 'doughnut', labels: { color: '#F3F4F6' } } },
+                    scales: type === 'bar' ? {
+                        x: { grid: { color: 'rgba(31,41,55,0.4)' }, ticks: { color: '#9CA3AF' } },
+                        y: { grid: { color: 'rgba(31,41,55,0.4)' }, ticks: { color: '#9CA3AF' } }
+                    } : {}
+                }
+            });
+        }
+
+        // Fetch Alerts Matrix
+        async function loadAlerts() {
+            try {
+                const res = await fetch(`${API_URL}/alerts/list`, {
+                    headers: { "Authorization": `Bearer ${sessionToken}` }
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    const b = document.getElementById("alerts-body");
+                    b.innerHTML = data.alerts.map(a => `
+                        <tr class="hover:bg-[#111827] transition">
+                            <td class="px-6 py-4 font-bold text-white">${a.alert_type}</td>
+                            <td class="px-6 py-4 text-[#38BDF8]">${a.severity}</td>
+                            <td class="px-6 py-4 text-gray-300 font-medium">${a.message}</td>
+                            <td class="px-6 py-4 text-gray-400 text-xs">${a.alert_date}</td>
+                        </tr>
+                    `).join("");
+                }
+            } catch (e) {}
+        }
+
+        // Run SQL query on English Text input
+        async function runQuery() {
+            const p = document.getElementById("ai-input").value;
+            if (!p) return;
+
+            try {
+                const res = await fetch(`${API_URL}/sql/query`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${sessionToken}` },
+                    body: JSON.stringify({ prompt: p })
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    document.getElementById("code-sql").innerText = data.sql;
+                    document.getElementById("ai-context").innerText = data.insight;
+                    
+                    const head = document.getElementById("table-head");
+                    const body = document.getElementById("table-body");
+                    head.innerHTML = ""; body.innerHTML = "";
+                    
+                    if (data.data && data.data.length > 0) {
+                        const cols = Object.keys(data.data[0]);
+                        head.innerHTML = cols.map(c => `<th class="px-6 py-3">${c}</th>`).join("");
+                        body.innerHTML = data.data.map(row => `
+                            <tr class="hover:bg-[#1F2937] transition">
+                                ${cols.map(c => `<td class="px-6 py-3 text-gray-300">${row[c] !== null ? row[c] : ''}</td>`).join("")}
+                            </tr>
+                        `).join("");
+                    } else {
+                        body.innerHTML = `<tr><td class="p-6 text-gray-500 font-medium">No operational telemetry records returned.</td></tr>`;
+                    }
+                    document.getElementById("query-results").classList.remove("hidden");
+                }
+            } catch (e) {}
+        }
+
+        if (sessionToken) {
+            initializePlatform();
+        }
+    </script>
+</body>
+</html>
