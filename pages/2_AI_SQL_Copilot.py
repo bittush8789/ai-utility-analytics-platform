@@ -86,7 +86,7 @@ if question:
                 "content": f"Results from your question: '{question}'"
             })
 
-for chat in reversed(st.session_state.chat_history):
+for idx, chat in enumerate(reversed(st.session_state.chat_history)):
     if chat["role"] == "user":
         st.chat_message("user").markdown(f"**Q:** {chat['content']}")
     else:
@@ -118,7 +118,7 @@ for chat in reversed(st.session_state.chat_history):
                     
                 with tabs[3]:
                     st.code(chat["sql"], language="sql")
-                    render_ai_insight_popover("copilot_chat", "💡 Query Validation & Optimization", f"Analyze and validate: {chat['sql']}")
+                    render_ai_insight_popover(f"copilot_chat_{idx}", "💡 Query Validation & Optimization", f"Analyze and validate: {chat['sql']}")
                     if st.button("⭐ Save Query to Favorites", key=f"fav_{hash(chat['sql'])}"):
                         st.session_state.favorites.append(chat["sql"])
                         st.success("Saved query to favorites!")
