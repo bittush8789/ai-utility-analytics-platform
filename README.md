@@ -10,7 +10,7 @@ An enterprise-grade, multi-agent AI-powered analytics and intelligence platform 
 
 ---
 
-## 📖 Why This Platform Matters
+# 📖 Why This Platform Matters
 
 Modern utility operations generate high-volume telemetry across asset health, incidents, water testing, customer interactions, and billing. For business users, managers, and data analysts, interacting with this data via standard SQL often introduces severe technical friction.
 
